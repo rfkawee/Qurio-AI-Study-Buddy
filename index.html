@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qurio - Your Smart Study Buddy</title>
+    <meta name="description" content="Qurio - Your Smart Study Buddy. Platform belajar cerdas berbasis dokumen asli dengan Split-Screen PDF Viewer, Ringkasan Instan, dan Kuis Interaktif." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+              body: ['Inter', '"Plus Jakarta Sans"', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+            colors: {
+              qurio: {
+                blue: '#397DE0',
+                'blue-hover': '#2e68bf',
+                'blue-subtle': '#ebf3fd',
+                sky: '#A9D8FF',
+                yellow: '#FFD66B',
+                green: '#A9E5C1',
+                cloud: '#F5F7FB',
+                navy: '#25344B',
+                'navy-secondary': '#475a75',
+                'navy-muted': '#7487a3',
+              },
+              brand: {
+                50: '#F0F6FF',
+                100: '#E0EEFE',
+                200: '#BAE0FD',
+                300: '#7CC4FA',
+                400: '#38A3F5',
+                500: '#397DE0',
+                600: '#2e68bf',
+                700: '#1e4d94',
+              }
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-[#F5F7FB] text-[#25344B] antialiased font-sans">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

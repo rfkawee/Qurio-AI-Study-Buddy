@@ -1,0 +1,515 @@
+@import './tokens.css';
+@import './base.css';
+
+/* Modern clean utility classes complementing Tailwind */
+.border-hairline {
+  border: 1px solid var(--color-border);
+}
+
+.border-hairline-b {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.border-hairline-t {
+  border-top: 1px solid var(--color-border);
+}
+
+.border-hairline-r {
+  border-right: 1px solid var(--color-border);
+}
+
+.border-hairline-l {
+  border-left: 1px solid var(--color-border);
+}
+
+.bg-canvas {
+  background-color: var(--color-canvas);
+}
+
+.bg-canvas-subtle {
+  background-color: var(--color-canvas-subtle);
+}
+
+.bg-canvas-well {
+  background-color: var(--color-canvas-well);
+}
+
+/* Page Jump Pulse Indicator */
+@keyframes pagePulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--color-accent);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.pulse-highlight {
+  animation: pagePulse 1.2s cubic-bezier(0, 0, 0.2, 1);
+  border-color: var(--color-accent) !important;
+}
+
+/* Global transitions for silky smooth theme adaptation */
+html, body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* =========================================================================
+   UNIVERSAL THEME ENGINE: HIGH CONTRAST & CONSISTENCY ACROSS ALL MODES
+   Guarantees 100% legibility in light, dark (midnight), and warm (sepia)
+   ========================================================================= */
+
+/* --- DARK (MIDNIGHT) BASE RULES --- */
+[data-theme="dark"] {
+  /* Surfaces */
+  .bg-white {
+    background-color: var(--color-canvas-subtle) !important;
+  }
+  .bg-slate-50,
+  .bg-slate-100,
+  .bg-slate-50\/40,
+  .bg-slate-50\/50,
+  .bg-slate-50\/60,
+  .bg-slate-50\/70,
+  .bg-slate-50\/80,
+  .bg-slate-100\/80 {
+    background-color: var(--color-canvas-well) !important;
+  }
+  .bg-slate-200,
+  .bg-slate-200\/50,
+  .bg-slate-200\/70 {
+    background-color: var(--color-canvas-inset) !important;
+  }
+  .bg-slate-800 {
+    background-color: var(--color-canvas-inset) !important;
+    color: var(--color-ink) !important;
+  }
+  /* Primary dark buttons & user chat bubbles take accent on dark grounds */
+  .bg-slate-900 {
+    background-color: var(--color-canvas-well) !important;
+    border: 1px solid var(--color-border-strong) !important;
+    color: var(--color-ink) !important;
+  }
+
+  /* Typography / High-contrast Inks */
+  .text-slate-950,
+  .text-slate-900,
+  .text-slate-800 {
+    color: var(--color-ink) !important;
+  }
+  .text-slate-700,
+  .text-slate-600 {
+    color: var(--color-ink-secondary) !important;
+  }
+  .text-slate-500 {
+    color: var(--color-ink-muted) !important;
+  }
+  .text-slate-400 {
+    color: var(--color-ink-faint) !important;
+  }
+  .text-slate-300 {
+    color: var(--color-border-strong) !important;
+  }
+
+  /* Borders / Dividers */
+  .border-slate-100,
+  .border-slate-200,
+  .border-slate-200\/60,
+  .border-slate-200\/70,
+  .border-slate-200\/80 {
+    border-color: var(--color-border) !important;
+  }
+  .border-slate-300,
+  .border-slate-400 {
+    border-color: var(--color-border-strong) !important;
+  }
+  .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+  .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--color-border) !important;
+  }
+
+  /* Accents & Tints (Eliminate dark unreadable navy text on dark cards) */
+  .bg-indigo-50,
+  .bg-indigo-50\/40,
+  .bg-indigo-50\/50,
+  .bg-indigo-50\/60,
+  .bg-indigo-50\/70,
+  .bg-indigo-100,
+  .bg-blue-50,
+  .bg-blue-100 {
+    background-color: var(--color-accent-subtle) !important;
+  }
+  .border-indigo-200,
+  .border-indigo-300,
+  .border-blue-200,
+  .border-blue-300 {
+    border-color: var(--color-accent-subtle-border) !important;
+  }
+  .text-indigo-600,
+  .text-indigo-700,
+  .text-blue-600,
+  .text-blue-700 {
+    color: var(--color-accent) !important;
+  }
+  .text-indigo-800,
+  .text-indigo-900,
+  .text-indigo-950,
+  .text-blue-800,
+  .text-blue-900,
+  .text-blue-950 {
+    color: var(--color-ink) !important;
+  }
+  .bg-indigo-600,
+  .bg-blue-600 {
+    background-color: var(--color-accent) !important;
+    color: var(--color-accent-ink) !important;
+  }
+  .hover\:bg-indigo-700:hover,
+  .hover\:bg-blue-700:hover {
+    background-color: var(--color-accent-hover) !important;
+  }
+
+  /* Interactive Hovers */
+  .hover\:bg-slate-50:hover,
+  .hover\:bg-slate-100:hover,
+  .hover\:bg-slate-50\/80:hover {
+    background-color: var(--color-canvas-inset) !important;
+  }
+  .hover\:text-slate-900:hover,
+  .hover\:text-slate-800:hover {
+    color: var(--color-ink) !important;
+  }
+  .hover\:text-slate-700:hover,
+  .hover\:text-slate-600:hover {
+    color: var(--color-ink-secondary) !important;
+  }
+  .hover\:border-slate-300:hover,
+  .hover\:border-slate-400:hover {
+    border-color: var(--color-border-strong) !important;
+  }
+
+  /* Form Controls (Inputs, Selects, Dropdowns) */
+  input,
+  select,
+  textarea {
+    background-color: var(--color-canvas-well) !important;
+    color: var(--color-ink) !important;
+    border-color: var(--color-border-strong) !important;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-ink-faint) !important;
+  }
+  select option {
+    background-color: var(--color-canvas-subtle) !important;
+    color: var(--color-ink) !important;
+  }
+
+  /* Feedback Alerts in Dark Mode */
+  .bg-emerald-50,
+  .bg-emerald-50\/20,
+  .bg-emerald-100\/70 {
+    background-color: #064e3b !important;
+  }
+  .border-emerald-300,
+  .border-emerald-300\/80,
+  .border-emerald-500 {
+    border-color: #059669 !important;
+  }
+  .text-emerald-900,
+  .text-emerald-950,
+  .text-emerald-800 {
+    color: #a7f3d0 !important;
+  }
+  .text-emerald-700 {
+    color: #6ee7b7 !important;
+  }
+
+  .bg-rose-50,
+  .bg-rose-50\/20,
+  .bg-rose-100\/70 {
+    background-color: #4c0519 !important;
+  }
+  .border-rose-300,
+  .border-rose-300\/80,
+  .border-rose-400 {
+    border-color: #e11d48 !important;
+  }
+  .text-rose-900,
+  .text-rose-950,
+  .text-rose-800 {
+    color: #fecdd3 !important;
+  }
+  .text-rose-700 {
+    color: #fda4af !important;
+  }
+}
+
+/* --- WARM (SEPIA / PARCHMENT) RULES --- */
+[data-theme="warm"] {
+  /* Surfaces */
+  .bg-white {
+    background-color: var(--color-canvas-subtle) !important;
+  }
+  .bg-slate-50,
+  .bg-slate-100,
+  .bg-slate-50\/40,
+  .bg-slate-50\/50,
+  .bg-slate-50\/60,
+  .bg-slate-50\/70,
+  .bg-slate-50\/80,
+  .bg-slate-100\/80 {
+    background-color: var(--color-canvas-well) !important;
+  }
+  .bg-slate-200,
+  .bg-slate-200\/50,
+  .bg-slate-200\/70 {
+    background-color: var(--color-canvas-inset) !important;
+  }
+  .bg-slate-900 {
+    background-color: #291e14 !important;
+    color: #fcf9f2 !important;
+  }
+  .bg-slate-800 {
+    background-color: #3b2c1f !important;
+    color: #fcf9f2 !important;
+  }
+
+  /* Typography / Warm Inks */
+  .text-slate-950,
+  .text-slate-900,
+  .text-slate-800 {
+    color: var(--color-ink) !important;
+  }
+  .text-slate-700,
+  .text-slate-600 {
+    color: var(--color-ink-secondary) !important;
+  }
+  .text-slate-500 {
+    color: var(--color-ink-muted) !important;
+  }
+  .text-slate-400 {
+    color: var(--color-ink-faint) !important;
+  }
+
+  /* Borders / Dividers */
+  .border-slate-100,
+  .border-slate-200,
+  .border-slate-200\/60,
+  .border-slate-200\/70,
+  .border-slate-200\/80 {
+    border-color: var(--color-border) !important;
+  }
+  .border-slate-300,
+  .border-slate-400 {
+    border-color: var(--color-border-strong) !important;
+  }
+  .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+  .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--color-border) !important;
+  }
+
+  /* Accents */
+  .bg-indigo-50,
+  .bg-indigo-50\/40,
+  .bg-indigo-50\/50,
+  .bg-indigo-50\/60,
+  .bg-indigo-50\/70,
+  .bg-indigo-100,
+  .bg-blue-50,
+  .bg-blue-100 {
+    background-color: var(--color-accent-subtle) !important;
+  }
+  .border-indigo-200,
+  .border-indigo-300,
+  .border-blue-200,
+  .border-blue-300 {
+    border-color: var(--color-accent-subtle-border) !important;
+  }
+  .text-indigo-600,
+  .text-indigo-700,
+  .text-blue-600,
+  .text-blue-700 {
+    color: var(--color-accent) !important;
+  }
+  .text-indigo-800,
+  .text-indigo-900,
+  .text-indigo-950,
+  .text-blue-800,
+  .text-blue-900,
+  .text-blue-950 {
+    color: var(--color-ink) !important;
+  }
+  .bg-indigo-600,
+  .bg-blue-600 {
+    background-color: var(--color-accent) !important;
+    color: var(--color-accent-ink) !important;
+  }
+  .hover\:bg-indigo-700:hover,
+  .hover\:bg-blue-700:hover {
+    background-color: var(--color-accent-hover) !important;
+  }
+
+  /* Interactive Hovers */
+  .hover\:bg-slate-50:hover,
+  .hover\:bg-slate-100:hover,
+  .hover\:bg-slate-50\/80:hover {
+    background-color: var(--color-canvas-well) !important;
+  }
+  .hover\:text-slate-900:hover,
+  .hover\:text-slate-800:hover {
+    color: var(--color-ink) !important;
+  }
+  .hover\:border-slate-300:hover,
+  .hover\:border-slate-400:hover {
+    border-color: var(--color-border-strong) !important;
+  }
+
+  /* Form Controls */
+  input,
+  select,
+  textarea {
+    background-color: var(--color-canvas-subtle) !important;
+    color: var(--color-ink) !important;
+    border-color: var(--color-border) !important;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-ink-faint) !important;
+  }
+  select option {
+    background-color: var(--color-canvas) !important;
+    color: var(--color-ink) !important;
+  }
+}
+
+/* Bookmark color highlights (Accessible in all modes) */
+.bookmark-highlight-yellow {
+  background-color: #fef9c3;
+  color: #713f12;
+  border-left: 3px solid #eab308;
+}
+
+.bookmark-highlight-green {
+  background-color: #dcfce7;
+  color: #14532d;
+  border-left: 3px solid #22c55e;
+}
+
+.bookmark-highlight-pink {
+  background-color: #fce7f3;
+  color: #831843;
+  border-left: 3px solid #ec4899;
+}
+
+.bookmark-highlight-blue {
+  background-color: #e0f2fe;
+  color: #0c4a6e;
+  border-left: 3px solid #0284c7;
+}
+
+[data-theme="dark"] .bookmark-highlight-yellow {
+  background-color: #422006;
+  color: #fef08a;
+  border-left: 3px solid #eab308;
+}
+
+[data-theme="dark"] .bookmark-highlight-green {
+  background-color: #052e16;
+  color: #bbf7d0;
+  border-left: 3px solid #22c55e;
+}
+
+[data-theme="dark"] .bookmark-highlight-pink {
+  background-color: #500724;
+  color: #fbcfe8;
+  border-left: 3px solid #ec4899;
+}
+
+[data-theme="dark"] .bookmark-highlight-blue {
+  background-color: #082f49;
+  color: #bae6fd;
+  border-left: 3px solid #0284c7;
+}
+
+/* =========================================================================
+   QURIO FRIENDLY MODERN TECH COMPONENT CLASSES
+   ========================================================================= */
+
+.card-qurio {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px -2px rgba(37, 52, 75, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-qurio-hover:hover {
+  border-color: #A9D8FF;
+  box-shadow: 0 8px 24px -4px rgba(57, 125, 224, 0.12);
+  transform: translateY(-1px);
+}
+
+.btn-qurio-primary {
+  background-color: #397DE0;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0 2px 6px -1px rgba(57, 125, 224, 0.3);
+}
+
+.btn-qurio-primary:hover {
+  background-color: #2e68bf;
+  box-shadow: 0 4px 14px -1px rgba(57, 125, 224, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-qurio-primary:active {
+  transform: scale(0.98);
+}
+
+.input-qurio {
+  background-color: #ffffff;
+  border: 1px solid #e2eaf2;
+  border-radius: 12px;
+  color: #25344B;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-qurio:focus {
+  outline: none;
+  border-color: #397DE0;
+  box-shadow: 0 0 0 3px rgba(57, 125, 224, 0.16);
+}
+
+/* Citation Pill Badge */
+.citation-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  background-color: #ebf3fd;
+  color: #2e68bf;
+  border: 1px solid rgba(169, 216, 255, 0.8);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.citation-pill:hover {
+  background-color: #397DE0;
+  color: #ffffff;
+  border-color: #397DE0;
+  box-shadow: 0 2px 8px rgba(57, 125, 224, 0.25);
+  transform: translateY(-0.5px);
+}
+

@@ -1,0 +1,57 @@
+services:
+  # 1. PostgreSQL Database dengan pgvector extension aktif
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: qurio-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-qurio}
+      POSTGRES_USER: ${POSTGRES_USER:-qurio_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qurio_secret_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/schema_postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-qurio_admin} -d ${POSTGRES_DB:-qurio}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. FastAPI Backend Service (True RAG & Multi-Agent Core)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: qurio-backend
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgresql://qurio_admin:qurio_secret_password@db:5432/qurio}
+      - UPLOAD_DIR=/app/uploads
+      - APP_ENV=production
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # 3. Frontend Web App (Nginx Single Page Application)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: qurio-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  uploads_data:

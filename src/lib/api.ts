@@ -1,0 +1,251 @@
+import type { 
+  DocumentItem, SummaryData, QuizGenerateResponse, QuizQuestion, 
+  QuizSubmitResponse, ChatMessage, DocumentContentResponse 
+} from '../types';
+import { getMemberId } from './auth';
+
+const API_BASE = '/api';
+
+function getHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {
+  return {
+    'X-Member-Id': getMemberId(),
+    ...extraHeaders,
+  };
+}
+
+export async function fetchDocuments(): Promise<DocumentItem[]> {
+  const res = await fetch(`${API_BASE}/documents`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    throw new Error(`Gagal memuat dokumen: ${res.statusText}`);
+  }
+  const data = await res.json();
+  return data.documents || [];
+}
+
+export async function uploadDocument(file: File): Promise<DocumentItem> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${API_BASE}/documents/upload`, {
+    method: 'POST',
+    headers: {
+      'X-Member-Id': getMemberId(),
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Upload gagal: HTTP ${res.status}`);
+  }
+
+  return await res.json();
+}
+
+export async function addYouTubeReference(url: string): Promise<DocumentItem> {
+  const res = await fetch(`${API_BASE}/documents/youtube`, {
+    method: 'POST',
+    headers: getHeaders({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({ url }),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Gagal memproses YouTube: HTTP ${res.status}`);
+  }
+
+  return await res.json();
+}
+
+export async function fetchDocumentContent(documentId: string): Promise<DocumentContentResponse> {
+  const res = await fetch(`${API_BASE}/documents/${documentId}/content`, {
+    headers: getHeaders(),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || 'Gagal memuat konten materi.');
+  }
+
+  return await res.json();
+}
+
+export async function deleteDocument(documentId: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/documents/${documentId}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    throw new Error('Gagal menghapus dokumen.');
+  }
+}
+
+export function getDocumentPdfUrl(documentId: string): string {
+  return `${API_BASE}/documents/${documentId}/file`;
+}
+
+export async function fetchChatHistory(documentId: string): Promise<ChatMessage[]> {
+  const res = await fetch(`${API_BASE}/chat/history?document_id=${encodeURIComponent(documentId)}`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    return [];
+  }
+  const data = await res.json();
+  return data.map((item: any) => ({
+    id: item.id,
+    role: item.role,
+    content: item.content,
+    citations: item.citations || [],
+    isStreaming: false,
+  }));
+}
+
+export async function clearChatHistory(documentId: string): Promise<void> {
+  await fetch(`${API_BASE}/chat/history?document_id=${encodeURIComponent(documentId)}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+}
+
+export async function sendChatStreaming(
+  documentId: string,
+  question: string,
+  onToken: (token: string) => void,
+  onDone: (citations: (number | string)[]) => void,
+  onError: (errorMsg: string) => void
+): Promise<void> {
+  try {
+    const res = await fetch(`${API_BASE}/chat`, {
+      method: 'POST',
+      headers: getHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        document_id: documentId,
+        question: question,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      onError(err.detail || `Server error: HTTP ${res.status}`);
+      return;
+    }
+
+    const reader = res.body?.getReader();
+    if (!reader) {
+      onError('Respons stream tidak dapat dibaca.');
+      return;
+    }
+
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+    let citations: (number | string)[] = [];
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const json = JSON.parse(line.substring(6));
+            if (json.token) {
+              onToken(json.token);
+            }
+            if (json.done && json.citations) {
+              citations = json.citations;
+            }
+          } catch (e) {
+            console.error('SSE JSON parse error', e);
+          }
+        }
+      }
+    }
+
+    onDone(citations);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Koneksi ke backend terputus.';
+    onError(message);
+  }
+}
+
+export async function fetchExistingSummary(documentId: string): Promise<SummaryData | null> {
+  try {
+    const res = await fetch(`${API_BASE}/summary?document_id=${encodeURIComponent(documentId)}`, {
+      method: 'GET',
+      headers: getHeaders(),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchSummary(
+  documentId: string,
+  topic?: string,
+  forceRefresh: boolean = false
+): Promise<SummaryData> {
+  const res = await fetch(`${API_BASE}/summary`, {
+    method: 'POST',
+    headers: getHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ document_id: documentId, topic, force_refresh: forceRefresh }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Gagal memuat ringkasan.');
+  }
+  return await res.json();
+}
+
+export async function fetchQuiz(documentId: string, topic: string, numQuestions: number): Promise<QuizGenerateResponse> {
+  const res = await fetch(`${API_BASE}/quiz/generate`, {
+    method: 'POST',
+    headers: getHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({
+      document_id: documentId,
+      topic: topic,
+      num_questions: numQuestions,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Gagal membuat kuis.');
+  }
+  return await res.json();
+}
+
+export async function submitQuizAnswers(
+  documentId: string,
+  topic: string,
+  answers: { question_id: number; user_answer: string | null }[],
+  questions: QuizQuestion[]
+): Promise<QuizSubmitResponse> {
+  const res = await fetch(`${API_BASE}/quiz/submit`, {
+    method: 'POST',
+    headers: getHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({
+      document_id: documentId,
+      topic: topic,
+      answers: answers,
+      questions: questions,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Gagal mengirim jawaban kuis.');
+  }
+  return await res.json();
+}

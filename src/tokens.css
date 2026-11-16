@@ -1,0 +1,155 @@
+/* Qurio Design System · v1.0.0
+   Brand: Qurio — Your Smart Study Buddy.
+   Direction: Friendly Modern Tech (Approach, Playful, Professional, Clean)
+   Palette:
+     Primary Blue:     #397DE0
+     Sky Blue:         #A9D8FF
+     Curiosity Yellow: #FFD66B
+     Growth Green:     #A9E5C1
+     Cloud White:      #F5F7FB (Canvas)
+     Midnight Navy:    #25344B (Typography)
+*/
+
+:root {
+  color-scheme: light;
+
+  /* Brand Signature Colors */
+  --qurio-blue: #397DE0;
+  --qurio-blue-hover: #2e68bf;
+  --qurio-blue-subtle: #ebf3fd;
+  --qurio-sky: #A9D8FF;
+  --qurio-sky-subtle: #f0f7ff;
+  --qurio-yellow: #FFD66B;
+  --qurio-yellow-subtle: #fffdf5;
+  --qurio-green: #A9E5C1;
+  --qurio-green-subtle: #f2fbf6;
+  --qurio-cloud: #F5F7FB;
+  --qurio-navy: #25344B;
+  --qurio-navy-secondary: #475a75;
+  --qurio-navy-muted: #7487a3;
+
+  /* Canvas / Surface Layers */
+  --color-canvas: #F5F7FB;          /* Cloud White */
+  --color-canvas-subtle: #ffffff;   /* Pure White Cards */
+  --color-canvas-well: #eef3f9;     /* Subtle Insets */
+  --color-canvas-inset: #e2eaf4;
+
+  /* Ink / Text Contrast */
+  --color-ink: #25344B;            /* Midnight Navy */
+  --color-ink-secondary: #475a75;
+  --color-ink-muted: #7487a3;
+  --color-ink-faint: #9cb0cc;
+
+  /* Hairline Rules & Borders */
+  --color-border: #e2eaf2;
+  --color-border-subtle: #edf3f8;
+  --color-border-strong: #cbd7e6;
+  --color-border-active: #397DE0;
+
+  /* Signal / Accent */
+  --color-accent: #397DE0;
+  --color-accent-hover: #2e68bf;
+  --color-accent-subtle: #ebf3fd;
+  --color-accent-subtle-border: #A9D8FF;
+  --color-accent-ink: #ffffff;
+  --color-focus: #397DE0;
+
+  /* Semantic Feedback States */
+  --color-success: #10b981;
+  --color-success-subtle: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-warning-subtle: #fffbeb;
+  --color-error: #ef4444;
+  --color-error-subtle: #fef2f2;
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing Scale */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Friendly Modern Corner Radii */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Soft Layered Shadows */
+  --shadow-subtle: 0 1px 3px rgba(37, 52, 75, 0.04);
+  --shadow-card: 0 2px 8px -2px rgba(37, 52, 75, 0.05), 0 0 0 1px var(--color-border);
+  --shadow-dropdown: 0 10px 25px -5px rgba(37, 52, 75, 0.1), 0 0 0 1px var(--color-border);
+  --shadow-island: 0 4px 16px -2px rgba(37, 52, 75, 0.08), 0 0 0 1px var(--color-border);
+}
+
+/* === DARK THEME (Midnight OLED / Slate) === */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-canvas: #090d16;
+  --color-canvas-subtle: #111827;
+  --color-canvas-well: #1e293b;
+  --color-canvas-inset: #293548;
+
+  --color-ink: #f8fafc;
+  --color-ink-secondary: #e2e8f0;
+  --color-ink-muted: #94a3b8;
+  --color-ink-faint: #64748b;
+
+  --color-border: #1e293b;
+  --color-border-subtle: #162032;
+  --color-border-strong: #334155;
+  --color-border-active: #818cf8;
+
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+  --color-accent-subtle: #1e1b4b;
+  --color-accent-subtle-border: #3730a3;
+  --color-accent-ink: #ffffff;
+  --color-focus: #818cf8;
+
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-dropdown: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--color-border);
+  --shadow-island: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-border);
+}
+
+/* === WARM THEME (Sepia / Eye-Care Parchment) === */
+[data-theme="warm"] {
+  color-scheme: light;
+
+  --color-canvas: #fcf9f2;
+  --color-canvas-subtle: #f6f0e2;
+  --color-canvas-well: #eee3d0;
+  --color-canvas-inset: #dfd1bb;
+
+  --color-ink: #291e14;
+  --color-ink-secondary: #443526;
+  --color-ink-muted: #6e5a47;
+  --color-ink-faint: #947e68;
+
+  --color-border: #e2d2ba;
+  --color-border-subtle: #eee3d1;
+  --color-border-strong: #cfbc9e;
+  --color-border-active: #b45309;
+
+  --color-accent: #b45309;
+  --color-accent-hover: #92400e;
+  --color-accent-subtle: #fef3c7;
+  --color-accent-subtle-border: #fde68a;
+  --color-accent-ink: #ffffff;
+  --color-focus: #b45309;
+
+  --shadow-subtle: 0 1px 2px rgba(41, 30, 20, 0.04);
+  --shadow-dropdown: 0 4px 16px rgba(41, 30, 20, 0.08), 0 0 0 1px var(--color-border);
+  --shadow-island: 0 2px 12px rgba(41, 30, 20, 0.06), 0 0 0 1px var(--color-border);
+}
