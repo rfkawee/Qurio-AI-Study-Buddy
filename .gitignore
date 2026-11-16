@@ -53,7 +53,8 @@ logs/
 
 # 7. Non-development documents & historical backups (kept on local disk only)
 legacy_backup/
-*.docx
+PRD_Konco_Sinauku.docx
+!DOCUMENTATION_END_TO_END.docx
 
 # 8. OS and IDE specific files
 .DS_Store
