@@ -51,10 +51,21 @@ yarn-error.log*
 *.log
 logs/
 
-# 7. Non-development documents & historical backups (kept on local disk only)
+# 7. Non-development documents, thesis reports & presentation files (kept on local disk only)
 legacy_backup/
 PRD_Konco_Sinauku.docx
-!DOCUMENTATION_END_TO_END.docx
+*.docx
+DOCUMENTATION_*.md
+DOCUMENTATION_*.docx
+PRESENTASI_*.md
+PRESENTASI_*.docx
+generate_docs_docx.py
+RUN_GUIDE.md
+DEPLOYMENT.md
+PRD.md
+reports/
+*.bat
+.oxlintrc.json
 
 # 8. OS and IDE specific files
 .DS_Store
